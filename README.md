@@ -2,7 +2,6 @@
 This is a bot for WhatsApp.
 # How to run:
 1. Change `config.example.json` to `config.json` and fill up the file.
-2. Add an empty file called `session.json`
 2. Run `npm install`
 3. Run `npm start`
 4. Scan the QR code with your WhatsApp.
