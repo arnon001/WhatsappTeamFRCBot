@@ -1,19 +1,27 @@
 const { Client } = require('whatsapp-web.js');
-const axios = require('axios');
-const schedule = require('node-schedule');
+const axios = require('axios'); 
+const schedule = require('node-schedule'); 
 const moment = require('moment-timezone');
 const qr = require('qrcode-terminal');
 const config = require('./config.json');
+const fs = require('fs');
+const SESSION_FILE_PATH = './session.json';
+const validTeamNumbers = [
+  1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1619, 2056
+]; // List of teams that will be checked for every minute and if it is in the hour then it will send the message (with the district teams)
+const district = '2023isr'; // District name in TBA (e.g., '2019fim' for FIM District in 2019)
 
-const client = new Client();
-
+const client = new Client({
+  session: loadSession(), // Load the session data if available
+});
 client.on('qr', (qrCode, resolve) => {
   console.log('QR Code received, please scan it.');
-  qr.generate(qrCode, { small: true });
+  qr.generate(qrCode, { small: true }); // generates QR code
 });
 
 client.on('authenticated', (session) => {
   console.log('Authenticated!');
+  saveSession(session); // saving the session
 });
 
 client.on('ready', () => {
@@ -26,6 +34,23 @@ client.on('ready', () => {
 });
 
 client.initialize();
+
+// Function to load the session data from a file
+function loadSession() {
+  try {
+    const sessionData = require(SESSION_FILE_PATH);
+    return sessionData;
+  } catch (error) {
+    console.log('Session data not found. Starting a new session.');
+    return null;
+  }
+}
+
+// Function to save the session data to a file
+function saveSession(session) {
+  fs.writeFileSync(SESSION_FILE_PATH, JSON.stringify(session));
+  console.log('Session data saved successfully.');
+}
 
 // Function to fetch FRC Team information from The Blue Alliance based on current time
 async function sendFRCTeamForCurrentTime() {
@@ -40,9 +65,7 @@ async function sendFRCTeamForCurrentTime() {
     formattedTime = formattedTime.replace(/^0(?=[1-9])/, '');
 
     // Specify the list of valid team numbers
-    const validTeamNumbers = [
-      1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1619, 2056
-    ];
+
 
     // Check if the formatted time corresponds to one of the specified times
     if (formattedTime === '0411') {
@@ -61,7 +84,7 @@ async function sendFRCTeamForCurrentTime() {
 
 
     // Check if the team number is in the specified district's team keys list
-    const districtTeamsUrl = 'https://www.thebluealliance.com/api/v3/district/2023isr/teams/keys';
+    const districtTeamsUrl = `https://www.thebluealliance.com/api/v3/district/${district}/teams/keys`;
     const districtTeamsResponse = await axios.get(districtTeamsUrl, {
       headers: {
         'X-TBA-Auth-Key': config.tbapi,
