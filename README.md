@@ -16,4 +16,5 @@ This code is under MIT license.
 You are more than welcome to change the code and make pull requests.
 
 # Notes:
-DO NOT GIVE YOUR SESSION.JSON FILE TO ANYONE!, IF SOMEONE HAS IT, HE CAN ENTER YOUR WHATSAPP!
+Need any help?
+Send me a discord message
