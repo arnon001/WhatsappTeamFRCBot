@@ -1,6 +1,6 @@
 const { Client } = require('whatsapp-web.js');
-const axios = require('axios'); 
-const schedule = require('node-schedule'); 
+const axios = require('axios');
+const schedule = require('node-schedule');
 const moment = require('moment-timezone');
 const qr = require('qrcode-terminal');
 const config = require('./config.json');
@@ -9,7 +9,6 @@ const validTeamNumbers = [
   1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1619, 2056
 ]; // List of teams that will be checked for every minute and if it is in the hour then it will send the message (with the district teams)
 const district = '2023isr'; // District name in TBA (e.g., '2019fim' for FIM District in 2019)
-
 
 const client = new Client();
 client.on('qr', (qrCode, resolve) => {
@@ -20,7 +19,6 @@ client.on('qr', (qrCode, resolve) => {
 client.on('authenticated', (session) => {
   console.log('Authenticated.');
 });
-
 
 client.on('ready', () => {
   console.log('WhatsApp bot is ready.');
@@ -47,7 +45,6 @@ async function sendFRCTeamForCurrentTime() {
 
     // Specify the list of valid team numbers
 
-
     // Check if the formatted time corresponds to one of the specified times
     if (formattedTime === '0411') {
       // Special case: Set the time for team 3388
@@ -62,7 +59,6 @@ async function sendFRCTeamForCurrentTime() {
       // Special case: Set the time for team 5990
       formattedTime = '5990';
     }
-
 
     // Check if the team number is in the specified district's team keys list
     const districtTeamsUrl = `https://www.thebluealliance.com/api/v3/district/${district}/teams/keys`;
@@ -93,7 +89,6 @@ async function sendFRCTeamForCurrentTime() {
       console.log('No FRC team found for the current time.');
       return;
     }
-
 
     const groupId = config.WGP;
     // Format and send the team information as needed
