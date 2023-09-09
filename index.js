@@ -92,7 +92,7 @@ async function sendFRCTeamForCurrentTime() {
 
     const groupId = config.WGP;
     // Format and send the team information as needed
-    const message = `FRC Team: ${teamData.nickname}, Team Number: ${teamData.team_number}`;
+    const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
     sendMessageToGroup(groupId, message);
   } catch (error) {
     console.error('Error fetching FRC team data:', error);
