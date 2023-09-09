@@ -4,6 +4,7 @@ const schedule = require('node-schedule');
 const moment = require('moment-timezone');
 const qr = require('qrcode-terminal');
 const config = require('./config.json');
+const translate = require('google-translate-api');
 
 const validTeamNumbers = [
   1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1619, 2056
@@ -91,9 +92,11 @@ async function sendFRCTeamForCurrentTime() {
     }
 
     const groupId = config.WGP;
+    const translatedMessage = await translateMessage(`FRC: ${newTeamData.nickname}, \n Team Number: ${newTeamData.team_number}`, 'he');
     // Format and send the team information as needed
     const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
     sendMessageToGroup(groupId, message);
+    sendMessageToGroup(groupId, translatedMessage);
   } catch (error) {
     console.error('Error fetching FRC team data:', error);
   }
@@ -103,4 +106,14 @@ async function sendFRCTeamForCurrentTime() {
 function sendMessageToGroup(groupId, message) {
   client.sendMessage(groupId, message);
   console.log('Message sent successfully to group:', groupId);
+}
+
+async function translateMessage(message, targetLang) {
+  try {
+    const { text } = await translate(message, { to: targetLang });
+    return text;
+  } catch (error) {
+    console.error('Error translating message:', error);
+    return message; // Return the original message on error
+  }
 }
