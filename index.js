@@ -70,7 +70,7 @@ async function sendFRCTeamForCurrentTime() {
 
     const districtTeamsKeys = districtTeamsResponse.data;
 
-    if (!districtTeamsKeys.includes(`frc${formattedTime}`) || !validTeamNumbers.includes(parseInt(formattedTime))) {
+    if (!districtTeamsKeys.includes(`frc${formattedTime}`) && !validTeamNumbers.includes(parseInt(formattedTime))) {
       console.log(`FRC Team ${formattedTime} is not in the specified district, or it is not a valid team number.`);
       return;
     }
