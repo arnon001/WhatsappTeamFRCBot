@@ -11,7 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.5.0",
-    "google-translate-api": "^2.3.0",
     "moment-timezone": "^0.5.43",
     "node-schedule": "^2.1.1",
     "qrcode-terminal": "^0.12.0",
