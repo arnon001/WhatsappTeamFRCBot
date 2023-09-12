@@ -122,8 +122,9 @@ async function sendFRCTeamForCurrentTime() {
 
     // Format and send the team information as needed
     const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
-    wait(waitinsec);
-    sendMessageToGroup(groupId, message);
+    setTimeout(async () => {
+      await sendMessageToGroup(groupId, message);
+    }, 1500);
   } catch (error) {
     console.error('Error fetching FRC team data:', error);
   }
