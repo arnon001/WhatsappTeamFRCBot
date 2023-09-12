@@ -54,6 +54,9 @@ client.on('message', async (message) => {
   if (text.includes('מה אנחנו')){
     await sendMessageToGroup(groupId, 'פינגונים!');
   }
+  if (text.includes('ירון דורון')){
+    await sendMessageToGroup(groupId, 'ירון דרוך*');
+  }
 });
 
 client.initialize();
