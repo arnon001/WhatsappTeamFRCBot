@@ -5,6 +5,8 @@ const moment = require('moment-timezone');
 const qr = require('qrcode-terminal');
 const config = require('./config.json');
 let waitinsec = 1;
+const groupId = config.WGP;
+
 const validTeamNumbers = [
   1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1323, 1619, 2056
 ]; // List of teams that will be checked for every minute and if it is in the hour then it will send the message (with the district teams)
@@ -33,6 +35,9 @@ client.on('message', async (message) => {
   const text = message.body.trim(); // Remove leading/trailing spaces for exact matching
   if (text === 'משוגע') { // Check for the exact text "משוגע"
     await handleCrazyMessage(message);
+  }
+  if (text === 'Crazy' || text === 'crazy') { // Check for the exact text "Crazy" or "crazy"
+    await handleCrazyMessageEnglish(message);
   }
 });
 
@@ -97,7 +102,6 @@ async function sendFRCTeamForCurrentTime() {
       return;
     }
 
-    const groupId = config.WGP;
     // Format and send the team information as needed
     const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
     wait(waitinsec);
@@ -109,31 +113,34 @@ async function sendFRCTeamForCurrentTime() {
 
 async function handleCrazyMessage(message) {
   try {
-    const groupId = message.chat.id._serialized;
-
     // Send the series of messages as replies
-    await CrazySend(groupId, 'משוגע?', message.id);
-    await CrazySend(groupId, 'אני הייתי פעם משוגע', message.id);
-    await CrazySend(groupId, 'הם נעלו אותי בחדר', message.id);
-    await CrazySend(groupId, 'חדר גומי מלא בעכברים', message.id);
-    await CrazySend(groupId, 'עכברים עושים אותי משוגע', message.id);
+    await sendMessageToGroup(groupId, 'משוגע?');
+    await sendMessageToGroup(groupId, 'אני הייתי פעם משוגע');
+    await sendMessageToGroup(groupId, 'הם נעלו אותי בחדר');
+    await sendMessageToGroup(groupId, 'חדר גומי מלא בעכברים');
+    await sendMessageToGroup(groupId, 'עכברים עושים אותי משוגע');
   } catch (error) {
     console.error('Error handling "משוגע" message:', error);
   }
 }
+async function handleCrazyMessageEnglish(message) {
+  try {
+    // Send the series of messages as replies
+    await sendMessageToGroup(groupId, 'Crazy?');
+    await sendMessageToGroup(groupId, 'I was Crazy once');
+    await sendMessageToGroup(groupId, 'They put me in a room');
+    await sendMessageToGroup(groupId, 'A rubber room');
+    await sendMessageToGroup(groupId, 'A rubber room full of rats');
+    await sendMessageToGroup(groupId, 'Rats makes me crazy');
+  } catch (error) {
+    console.error('Error handling "Crazy" message:', error);
+  }
+}
+
+
 
 // Function to send a WhatsApp message to a group
 function sendMessageToGroup(groupId, message) {
   client.sendMessage(groupId, message);
   console.log('Message sent successfully to group:', groupId);
-}
-
-async function CrazySend(groupId, message, replyToMessageId) {
-  try {
-    const chat = await client.getChatById(groupId);
-    await chat.sendMessage(message, { replyTo: replyToMessageId });
-    console.log('Message sent successfully to group:', groupId);
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
 }
