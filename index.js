@@ -4,9 +4,9 @@ const schedule = require('node-schedule');
 const moment = require('moment-timezone');
 const qr = require('qrcode-terminal');
 const config = require('./config.json');
-
+let waitinsec = 1;
 const validTeamNumbers = [
-  1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1619, 2056
+  1, 33, 67, 111, 118, 125, 148, 254, 302, 359, 624, 1114, 1323, 1619, 2056
 ]; // List of teams that will be checked for every minute and if it is in the hour then it will send the message (with the district teams)
 const district = '2023isr'; // District name in TBA (e.g., '2019fim' for FIM District in 2019)
 
@@ -29,11 +29,17 @@ client.on('ready', () => {
   });
 });
 
-client.initialize();
+client.on('message', async (message) => {
+  const text = message.body.trim(); // Remove leading/trailing spaces for exact matching
+  if (text === 'משוגע') { // Check for the exact text "משוגע"
+    await handleCrazyMessage(message);
+  }
+});
 
+client.initialize();
+waitinsec = waitinsec * 1000;
 // Function to fetch FRC Team information from The Blue Alliance based on current time
 async function sendFRCTeamForCurrentTime() {
- wait(1000);
   try {
     // Get the current time in your desired timezone
     const currentTime = moment().tz(config.timezone);
@@ -94,9 +100,25 @@ async function sendFRCTeamForCurrentTime() {
     const groupId = config.WGP;
     // Format and send the team information as needed
     const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
+    wait(waitinsec);
     sendMessageToGroup(groupId, message);
   } catch (error) {
     console.error('Error fetching FRC team data:', error);
+  }
+}
+
+async function handleCrazyMessage(message) {
+  try {
+    const groupId = message.chat.id._serialized;
+
+    // Send the series of messages as replies
+    await CrazySend(groupId, 'משוגע?', message.id);
+    await CrazySend(groupId, 'אני הייתי פעם משוגע', message.id);
+    await CrazySend(groupId, 'הם נעלו אותי בחדר', message.id);
+    await CrazySend(groupId, 'חדר גומי מלא בעכברים', message.id);
+    await CrazySend(groupId, 'עכברים עושים אותי משוגע', message.id);
+  } catch (error) {
+    console.error('Error handling "משוגע" message:', error);
   }
 }
 
@@ -104,4 +126,14 @@ async function sendFRCTeamForCurrentTime() {
 function sendMessageToGroup(groupId, message) {
   client.sendMessage(groupId, message);
   console.log('Message sent successfully to group:', groupId);
+}
+
+async function CrazySend(groupId, message, replyToMessageId) {
+  try {
+    const chat = await client.getChatById(groupId);
+    await chat.sendMessage(message, { replyTo: replyToMessageId });
+    console.log('Message sent successfully to group:', groupId);
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
 }
