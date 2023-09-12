@@ -95,7 +95,6 @@ async function sendFRCTeamForCurrentTime() {
     // Format and send the team information as needed
     const message = `FRC Team: ${teamData.nickname}. \n Team Number: ${teamData.team_number}`;
     sendMessageToGroup(groupId, message);
-    sendMessageToGroup(groupId, translatedMessage);
   } catch (error) {
     console.error('Error fetching FRC team data:', error);
   }
