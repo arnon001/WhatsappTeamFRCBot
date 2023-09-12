@@ -39,6 +39,18 @@ client.on('message', async (message) => {
   if (text === 'Crazy' || text === 'crazy') { // Check for the exact text "Crazy" or "crazy"
     await handleCrazyMessageEnglish(message);
   }
+  if (text === '22'){
+    await sendMessageToGroup(groupId, '12');
+  }
+  if (text.includes('ספייקס')){
+    await sendMessageToGroup(groupId, 'ספייקס!');
+  }
+  if (text.includes('מי אנחנו')){
+    await sendMessageToGroup(groupId, 'אוניקס טרוניקס!');
+  }
+  if (text.includes('מה אנחנו')){
+    await sendMessageToGroup(groupId, 'פינגונים!');
+  }
 });
 
 client.initialize();
