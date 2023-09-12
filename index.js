@@ -42,6 +42,9 @@ client.on('message', async (message) => {
   if (text === '22'){
     await sendMessageToGroup(groupId, '12');
   }
+  if (text === '2212'){
+    await sendMessageToGroup(groupId, '2212');
+  }
   if (text.includes('ספייקס')){
     await sendMessageToGroup(groupId, 'ספייקס!');
   }
