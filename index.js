@@ -33,6 +33,7 @@ client.initialize();
 
 // Function to fetch FRC Team information from The Blue Alliance based on current time
 async function sendFRCTeamForCurrentTime() {
+ wait(1000);
   try {
     // Get the current time in your desired timezone
     const currentTime = moment().tz(config.timezone);
