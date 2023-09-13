@@ -85,7 +85,7 @@ async function sendFRCTeamForCurrentTime() {
     } else if (formattedTime === '0752') {
       // Special case: Set the time for team 9303
       formattedTime = '9303';
-    } else if (formattedTime === '0014') {
+    } else if (formattedTime === '1103') {
       // Special case: Set the time for team 5990
       formattedTime = '5990';
     }
