@@ -33,17 +33,17 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
   const text = message.body.trim(); // Remove leading/trailing spaces for exact matching
-  if (text === 'משוגע') { // Check for the exact text "משוגע"
+  if (text.include('משוגע')) { // Check for the exact text "משוגע"
     await handleCrazyMessage(message);
   }
-  if (text === 'Crazy' || text === 'crazy') { // Check for the exact text "Crazy" or "crazy"
+  if (text.includes('Crazy') || text.includes('crazy')) { // Check for the exact text "Crazy" or "crazy"
     await handleCrazyMessageEnglish(message);
   }
-  if (text === '22'){
-    await sendMessageToGroup(groupId, '12');
+  if (text.includes('22')){
+    await sendMessageToGroup(groupId, '12!');
   }
-  if (text === '2212'){
-    await sendMessageToGroup(groupId, '2212');
+  if (text.includes('2212')){
+    await sendMessageToGroup(groupId, '2212!');
   }
   if (text.includes('ספייקס')){
     await sendMessageToGroup(groupId, 'ספייקס!');
