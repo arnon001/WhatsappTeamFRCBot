@@ -33,7 +33,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
   const text = message.body.trim(); // Remove leading/trailing spaces for exact matching
-  if (text.include('משוגע')) { // Check for the exact text "משוגע"
+  if (text.includes('משוגע')) { // Check for the exact text "משוגע"
     await handleCrazyMessage(message);
   }
   if (text.includes('Crazy') || text.includes('crazy')) { // Check for the exact text "Crazy" or "crazy"
