@@ -40,7 +40,7 @@ client.on('message', async (message) => {
   if (text.includes('משוגע') && !text.includes('מי') && !text.includes('פורוס') && !text.includes('crazy') && !text.includes('Crazy')) { // Check for the exact text "משוגע"
     await handleCrazyMessage(message);
   }
-  if (text.includes('Crazy') || text.includes('crazy') || !text.includes('משוגע')) { // Check for the exact text "Crazy" or "crazy"
+  if (text.includes('Crazy') || text.includes('crazy') && !text.includes('משוגע')) { // Check for the exact text "Crazy" or "crazy"
     await handleCrazyMessageEnglish(message);
   }
   if (text.includes('מי משוגע')) {
