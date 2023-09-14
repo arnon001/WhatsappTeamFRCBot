@@ -37,16 +37,16 @@ client.on('message', async (message) => {
     // Ignore the message
     return;
   }
-  if (text.includes('משוגע') && !text.includes('מי') && !text.includes('פורוס')) { // Check for the exact text "משוגע"
+  if (text.includes('משוגע') && !text.includes('מי') && !text.includes('פורוס') && !text.includes('crazy') && !text.includes('Crazy')) { // Check for the exact text "משוגע"
     await handleCrazyMessage(message);
   }
-  if (text.includes('Crazy') || text.includes('crazy')) { // Check for the exact text "Crazy" or "crazy"
+  if (text.includes('Crazy') || text.includes('crazy') || !text.includes('משוגע')) { // Check for the exact text "Crazy" or "crazy"
     await handleCrazyMessageEnglish(message);
   }
   if (text.includes('מי משוגע')) {
     await sendMessageToGroup(groupId, 'הפורוס משוגע!');
   }
-  if (text.includes('22') && !text.includes('@') && !text.contains('2212')) {
+  if (text.includes('22') && !text.includes('@') && !text.includes('2212')) {
     await sendMessageToGroup(groupId, '12!');
   }
   if (text.includes('2212')){
